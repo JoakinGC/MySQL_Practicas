@@ -1,0 +1,50 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema calendario
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema calendario
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `calendario` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci ;
+USE `calendario` ;
+
+-- -----------------------------------------------------
+-- Table `calendario`.`estaciones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `calendario`.`estaciones` (
+  `nombre` VARCHAR(45) NOT NULL,
+  `orden_estacion` INT NOT NULL,
+  `descripcion` VARCHAR(500) NULL,
+  PRIMARY KEY (`nombre`),
+  UNIQUE INDEX `orden_estacion_UNIQUE` (`orden_estacion` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `calendario`.`meses`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `calendario`.`meses` (
+  `nombre` VARCHAR(20) NOT NULL,
+  `num_dias` INT NOT NULL,
+  `orden_mes` INT NULL,
+  `estacion` VARCHAR(35) NULL,
+  PRIMARY KEY (`nombre`),
+  UNIQUE INDEX `orden_mes_UNIQUE` (`orden_mes` ASC) VISIBLE,
+  INDEX `f-_mesese_estaciones_nombre_idx` (`estacion` ASC) VISIBLE,
+  CONSTRAINT `f-_mesese_estaciones_nombre`
+    FOREIGN KEY (`estacion`)
+    REFERENCES `calendario`.`estaciones` (`nombre`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
